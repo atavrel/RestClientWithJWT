@@ -1,0 +1,53 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org"
+      lang="ru">
+
+<head>
+    <title>Home page</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" th:href="@{css/main.css}"/>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css"
+          integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
+    <script
+            src="https://code.jquery.com/jquery-3.4.1.js"
+            integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
+            crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
+</head>
+<body class="bg-light">
+<div class="container-fluid">
+    <div class="row p-2">
+        <div class="col-12" th:replace="fragments/header :: header"></div>
+    </div>
+</div>
+<div class="container-fluid">
+    <div class="row">
+        <span th:if="${roles.contains('USER') && (roles.contains('ADMIN') || roles.contains('MANAGER'))}">
+        <div th:replace="fragments/sidebar :: sidebar (roles=${roles})"></div>
+        </span>
+        <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
+            <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-5 pb-2 mb-3">
+                <h1>User information: </h1>
+            </div>
+            <div class="container-my">
+                <table class="table table-striped bg-white border bg-dark">
+                    <tbody id="getUser">
+
+                    <!--place for user.js script-->
+                    </tbody>
+                </table>
+            </div>
+
+        </main>
+    </div>
+</div>
+<script src="/js/user.js"></script>
+<script src="/js/logout.js"></script>
+</body>
+</html>
+
+

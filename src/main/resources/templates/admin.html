@@ -1,0 +1,248 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org"
+      lang="ru">
+<head>
+    <title>Admin page</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" th:href="@{css/main.css}"/>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css"
+          integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
+    <script
+            src="https://code.jquery.com/jquery-3.4.1.js"
+            integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
+            crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
+</head>
+
+<body class="bg-light">
+
+<div class="container-fluid">
+    <div class="row p-2">
+        <div class="col-12" th:replace="fragments/header :: header"></div>
+    </div>
+</div>
+<div class="container-fluid">
+    <div class="row">
+        <div th:replace="fragments/sidebar :: sidebar (roles=${roles})"></div>
+        </div>
+        <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
+            <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-5 pb-2 mb-3">
+                <h1>Admin panel: </h1>
+            </div>
+            <div class="container-my-xl">
+                <!-- Nav tabs -->
+                <ul class="nav nav-tabs" role="tablist">
+                    <li class="nav-item" id="reload">
+                        <a class="nav-link active" data-toggle="tab" href="#list">User list</a>
+                    </li>
+                    <li class="nav-item" id="addUserPanel">
+                        <a class="nav-link" data-toggle="tab" href="#adduser">New User</a>
+                    </li>
+                </ul>
+                <!-- Tab panes -->
+                <div class="tab-content">
+                    <!-- User list pane -->
+                    <div id="list" class="container-my-xl-1 tab-pane active"><br>
+                        <table class="table bg-white border bg-dark">
+                            <div class="card-header-my border">
+                                <h4 class="my-0 font-weight-normal">User list</h4>
+                            </div>
+
+                            <tr class="table-striped">
+                                <td class="font-weight-bold">Имя</td>
+                                <td class="font-weight-bold">Фамилия</td>
+                                <td class="font-weight-bold">Возраст</td>
+                                <td class="font-weight-bold">E-mail</td>
+                                <td class="font-weight-bold">Роль в системе</td>
+                                <td class="font-weight-bold">Удалить</td>
+                                <td class="font-weight-bold">Редактировать</td>
+                            </tr>
+                            <!--End of the table row -->
+                            <tbody id="userList">
+                            <!--place for userList script-->
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- Add user panel start-->
+                    <div id="adduser" class="container-my-xl-1 tab-pane fade bg-white"><br>
+                        <div class="card-header-my border">
+                            <h4 class="my-0 font-weight-normal">Add new user</h4>
+                        </div>
+                        <article class="card-body mx-auto" style="max-width: 350px">
+
+                            <div class="alert alert-danger small text-center validationMessageBlock">
+                                <span class="validationMessage"></span>
+                            </div>
+
+                            <form id="addUserForm">
+                                <div class="form-group input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"> <i class="fas fa-user-circle"></i></span>
+                                    </div>
+                                    <input name="firstName" class="form-control" placeholder="First name" type="text">
+                                </div>
+
+                                <div class="form-group input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"> <i class="fas fa-user-circle"></i></span>
+                                    </div>
+                                    <input name="lastName" class="form-control" placeholder="Last name" type="text">
+                                </div>
+
+                                <div class="form-group input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"> <i class="fas fa-child"></i></span>
+                                    </div>
+                                    <input name="age" id="age" class="form-control" placeholder="Age" type="number">
+                                </div>
+
+                                <div class="form-group input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"> <i class="fa fa-at"></i> </span>
+                                    </div>
+                                    <input name="email" id="email" class="form-control" placeholder="E-mail"
+                                           type="email" required>
+
+                                </div>
+                                <div class="form-group input-group">
+                                    <h5>Select user roles: </h5>
+                                    <div class="btn-group-vertical btn-group-toggle btn-block input-group"
+                                         data-toggle="buttons" id="roles">
+                                        <!-- place for script to add checkbox with roles -->
+                                    </div>
+                                </div>
+
+                                <div class="form-group input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"> <i class="fa fa-key"></i> </span>
+                                    </div>
+                                    <input type="text" id="password" name="password" placeholder="Password"
+                                           class="form-control" required>
+                                </div>
+
+                                <div class="pt-2">
+                                    <input type="submit" id="submitAddUser" class="btn btn-lg btn-success btn-block"
+                                           value="Add new user"/>
+                                </div>
+                            </form>
+                        </article>
+                    </div>
+                    <!-- Add user panel end-->
+                </div>
+            </div>
+
+            <!-- Delete user modal start -->
+            <div class="modal" tabindex="-1" id='deleteModal'>
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title">Attention!</h4>
+                            <button type="button" class="close" data-dismiss="modal">×</button>
+                        </div>
+                        <div class="modal-body">
+                            <label></label>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-light"
+                                        data-dismiss="modal">
+                                    No
+                                </button>
+                                <form>
+                                    <button type="submit" class="btn btn-primary" id="id">
+                                        Yes
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Delete user modal end -->
+
+            <!-- Edit User modal start -->
+            <div class="modal " tabindex="-1" id='editModal'>
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title"></h4>
+                            <button type="button" class="close" data-dismiss="modal">×</button>
+                        </div>
+                        <div class="modal-body">
+
+                            <form id="editUserForm">
+                                <div class="form-group input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">First name</span>
+                                    </div>
+                                    <input name="firstName" id="firstNameForEdit" class="form-control" type="text">
+                                </div>
+                                <input name="id" id="idForEdit" class="form-control" type="hidden">
+                                <div class="form-group input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">Last name</span>
+                                    </div>
+                                    <input name="lastName" id="lastNameForEdit" class="form-control" type="text">
+                                </div>
+
+                                <div class="form-group input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">Age</span>
+                                    </div>
+                                    <input name="age" id="ageForEdit" class="form-control" type="number">
+                                </div>
+
+                                <div class="form-group input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">E-mail</span>
+                                    </div>
+                                    <input name="email" id="emailForEdit" class="form-control" type="email" required>
+                                </div>
+
+                                <div class="form-group input-group">
+                                    <h5>Edit user roles: </h5>
+                                    <div class="btn-group-vertical btn-group-toggle btn-block input-group"
+                                         data-toggle="buttons" id="rolesForEdit">
+                                        <!-- place for script to add checkbox with roles -->
+                                    </div>
+                                </div>
+
+                                <div class="form-group input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">Password</span>
+                                    </div>
+                                    <input name="password" type="text" id="passwordForEdit"
+                                           placeholder="Enter your password"
+                                           class="form-control" required>
+                                </div>
+
+                                <div class="modal-footer">
+                                    <button id="closeEditModal" type="button" class="btn btn-light"
+                                            data-dismiss="modal">
+                                        Close
+                                    </button>
+                                    <button type="submit" class="btn btn-primary">
+                                        Confirm
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Edit User modal end -->
+
+        </main>
+    </div>
+</div>
+
+<script src="/js/admin.js"></script>
+<script src="/js/service.js"></script>
+<script src="/js/logout.js"></script>
+</body>
+</html>
+
+
+
