@@ -132,6 +132,7 @@ editModal.on('show.bs.modal', function (event) {
             modal.find('.modal-body #ageForEdit').val(user.age);
             modal.find('.modal-body #emailForEdit').val(user.email);
             modal.find('.modal-body #idForEdit').val(id);
+            modal.find('.modal-body #passwordForEdit').val(user.password);
             $.ajax({
                 type: "GET",
                 url: 'http://localhost:8075/api/admin/roles',

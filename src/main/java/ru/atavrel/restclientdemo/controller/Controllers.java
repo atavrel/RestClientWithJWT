@@ -1,6 +1,5 @@
 package ru.atavrel.restclientdemo.controller;
 
-import org.apache.commons.text.RandomStringGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.core.user.OAuth2User;
@@ -16,7 +15,6 @@ import ru.atavrel.restclientdemo.dto.AuthenticationRequestDTO;
 import ru.atavrel.restclientdemo.dto.AuthenticationResponseDTO;
 import ru.atavrel.restclientdemo.dto.RoleDTO;
 import ru.atavrel.restclientdemo.dto.UserDTO;
-import ru.atavrel.restclientdemo.util.PasswordGenerator;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -26,12 +24,6 @@ public class Controllers {
 
     private AuthenticationResponseDTO responseDTO;
     private RestTemplate restTemplate;
-    private PasswordGenerator passwordGenerator;
-
-    @Autowired
-    public void setPasswordGenerator(PasswordGenerator passwordGenerator) {
-        this.passwordGenerator = passwordGenerator;
-    }
 
     @Autowired
     public void setRestTemplate(RestTemplate restTemplate) {
@@ -92,19 +84,16 @@ public class Controllers {
 
     @GetMapping(value = "/login/{registrationId}")
     public String socialLogin(@AuthenticationPrincipal OAuth2User principal, Model model, @PathVariable String registrationId) {
-
-        String name = principal.getAttribute("name");
-        String email = principal.getAttribute("email");
-        String[] fullName = name.split(" ");
-        String firstName = fullName[0];
-        String lastName = fullName[1];
-        //String password = passwordGenerator.generateRandomSpecialCharacters(10);
-        String password = "123";
-        Set<RoleDTO> roles = new HashSet<>();
-        roles.add(new RoleDTO(1L, "USER"));
-
+        String email = principal.getAttribute("email"); // email может и не быть, надо добавить поиск по username
+        String password = principal.getName(); // в качестве пароля id из соцсети (тупо как-то)
         Boolean result = restTemplate.getForObject("http://localhost:8075/api/registration/users/email/" + email, Boolean.class);
-        if (result==null) {
+        if (result == null) {
+            String name = principal.getAttribute("name");
+            String[] fullName = name.split(" ");
+            String firstName = fullName[0];
+            String lastName = fullName[1];
+            Set<RoleDTO> roles = new HashSet<>();
+            roles.add(new RoleDTO(1L, "USER"));
             UserDTO userDTO = new UserDTO(firstName, lastName, email, password, roles);
             restTemplate.postForObject("http://localhost:8075/api/registration/users/", userDTO, UserDTO.class);
         }

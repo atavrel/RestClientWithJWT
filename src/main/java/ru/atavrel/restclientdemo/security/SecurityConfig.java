@@ -10,7 +10,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-                .oauth2Login().loginPage("/").failureUrl("/?error").defaultSuccessUrl("/login/{registrationID}")
+                .oauth2Login()
+                .loginPage("/")
+                .failureUrl("/?error")
+                .defaultSuccessUrl("/login/{registrationID}")
                 .and()
                 .logout().disable();
         http.csrf().disable();
